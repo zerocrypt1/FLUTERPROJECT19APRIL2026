@@ -50,9 +50,9 @@ Thumbs.db
 *.gz
 
 # 🔐 Firebase & API configs (sensitive)
+src/components/Desktop1/GoogleMapAPI.js
+src/components/Desktop1/firebase.config.js
 src/firebase.js
-Desktop1/firebase.config.js
-Desktop1/GoogleMapAPI.js
 
 # Optional (agar aur bhi sensitive ho)
 .env
