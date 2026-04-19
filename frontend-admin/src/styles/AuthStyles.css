@@ -1,0 +1,247 @@
+/* src/styles/AuthStyles.css */
+
+/* --- General Auth Container (Login/Signup) --- */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f4c75, #1b262c);
+    padding: 20px;
+}
+
+.auth-card {
+    background: #ffffff;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.auth-header h2 {
+    color: #0f4c75;
+    margin-bottom: 5px;
+}
+
+.auth-header p {
+    color: #6c757d;
+    margin-bottom: 20px;
+    font-size: 0.9em;
+}
+
+/* --- Form Elements --- */
+.auth-form {
+    text-align: left;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #343a40;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 1em;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+    border-color: #0f4c75;
+    outline: none;
+    box-shadow: 0 0 0 0.1rem rgba(15, 76, 117, 0.25);
+}
+
+.auth-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #3282b8;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    margin-top: 10px;
+}
+
+.auth-button:hover:not(:disabled) {
+    background-color: #0f4c75;
+}
+
+.auth-button:disabled {
+    background-color: #9fbbc9;
+    cursor: not-allowed;
+}
+
+/* --- Messages and Links --- */
+.auth-error, .auth-success {
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+.auth-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.auth-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.auth-footer {
+    margin-top: 20px;
+    font-size: 0.85em;
+    color: #6c757d;
+}
+
+.auth-link {
+    color: #3282b8;
+    cursor: pointer;
+    font-weight: 600;
+    margin-bottom: 5px;
+    transition: color 0.2s;
+}
+
+.auth-link:hover {
+    color: #0f4c75;
+    text-decoration: underline;
+}
+
+.auth-footer .note {
+    font-size: 0.75em;
+    color: #adb5bd;
+}
+
+
+/* --- Admin Controller Panel Styles --- */
+.controller-container {
+    padding: 30px;
+    max-width: 900px;
+    margin: 40px auto;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.controller-container h2 {
+    color: #0f4c75;
+    border-bottom: 2px solid #3282b8;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.controller-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+}
+
+.controller-success {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+}
+
+.no-requests {
+    text-align: center;
+    color: #6c757d;
+    padding: 20px;
+    border: 1px dashed #ced4da;
+    border-radius: 6px;
+    margin-top: 20px;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.admin-table th, .admin-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.admin-table th {
+    background-color: #f8f9fa;
+    color: #343a40;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.85em;
+}
+
+.admin-table tbody tr:hover {
+    background-color: #f1f8ff;
+}
+
+.admin-table button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-right: 8px;
+    transition: background-color 0.2s;
+}
+
+.approve-btn {
+    background-color: #28a745; /* Green */
+    color: white;
+}
+
+.approve-btn:hover:not(:disabled) {
+    background-color: #1e7e34;
+}
+
+.reject-btn {
+    background-color: #dc3545; /* Red */
+    color: white;
+}
+
+.reject-btn:hover:not(:disabled) {
+    background-color: #c82333;
+}
+
+.admin-table button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.refresh-btn {
+    background-color: #6c757d;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.refresh-btn:hover:not(:disabled) {
+    background-color: #5a6268;
+}

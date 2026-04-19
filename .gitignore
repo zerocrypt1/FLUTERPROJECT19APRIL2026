@@ -1,0 +1,30 @@
+# =========================
+# GLOBAL IGNORE
+# =========================
+
+# ENV
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+
+# Flutter
+.dart_tool/
+build/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Secrets
+serviceAccountKey.json
+firebase-service-account.json

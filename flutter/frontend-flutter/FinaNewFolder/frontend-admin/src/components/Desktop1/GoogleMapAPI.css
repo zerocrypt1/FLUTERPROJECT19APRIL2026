@@ -1,0 +1,181 @@
+/* Add these updated styles to your Desktop1.css file */
+
+/* Timing Selector Component Styles */
+.timing-selector {
+  position: relative;
+  width: 100%;
+}
+
+.timing-dropdown {
+  position: relative;
+  width: 100%;
+}
+
+/* Button styling */
+.dropdown-toggle {
+  width: 100%;
+  padding: 12px 15px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.dropdown-toggle:hover {
+  border-color: #aaa;
+}
+
+.dropdown-toggle.active {
+  border-color: #3949ab;
+  box-shadow: 0 0 0 2px rgba(57, 73, 171, 0.2);
+}
+
+.dropdown-arrow {
+  margin-left: 8px;
+  font-size: 10px;
+  transition: transform 0.2s ease;
+}
+
+/* Dropdown menu styling */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 5px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* Category styling */
+.time-category {
+  border-bottom: 1px solid #eee;
+}
+
+.time-category:last-child {
+  border-bottom: none;
+}
+
+.category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px 8px;
+  background-color: #f9fafc;
+}
+
+.category-header h4 {
+  margin: 0;
+  font-size: 14px;
+  color: #3949ab;
+  font-weight: 600;
+}
+
+.category-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.select-all-btn, .clear-btn {
+  background: none;
+  border: none;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+.select-all-btn {
+  color: #3949ab;
+}
+
+.clear-btn {
+  color: #f44336;
+}
+
+.select-all-btn:hover, .clear-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.time-slots-container {
+  padding: 8px 0;
+}
+
+.time-slot-option {
+  padding: 8px 15px;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.2s ease;
+}
+
+.time-slot-option:hover {
+  background-color: #f5f7ff;
+}
+
+.time-slot-option input[type="checkbox"] {
+  margin-right: 10px;
+  accent-color: #3949ab;
+}
+
+.time-slot-option label {
+  font-size: 14px;
+  cursor: pointer;
+  flex: 1;
+}
+
+/* Selected slots styling */
+.selected-time-slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.time-slot-tag {
+  display: inline-flex;
+  align-items: center;
+  background-color: #e8eaf6;
+  border: 1px solid #c5cae9;
+  border-radius: 16px;
+  padding: 4px 10px 4px 12px;
+  font-size: 12px;
+  color: #333;
+}
+
+.category-label {
+  background-color: #3949ab;
+  color: white;
+  font-size: 10px;
+  border-radius: 10px;
+  padding: 2px 6px;
+  margin: 0 4px 0 6px;
+}
+
+.remove-slot {
+  background: none;
+  border: none;
+  color: #3949ab;
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 2px;
+  padding: 0 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.remove-slot:hover {
+  color: #f44336;
+}

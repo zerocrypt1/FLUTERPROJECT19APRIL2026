@@ -1,0 +1,78 @@
+# =========================
+# 🔐 ENV (VERY IMPORTANT)
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# 📦 Dependencies
+# =========================
+node_modules/
+
+# =========================
+# 🧠 Flutter / Dart
+# =========================
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+
+# =========================
+# 🗂 Platform specific
+# =========================
+/android/.gradle
+/android/app/build
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+/ios/Pods
+/ios/.symlinks
+/ios/Flutter/Flutter.framework
+/ios/Flutter/App.framework
+
+# =========================
+# 🧪 IDE / Editor
+# =========================
+.idea/
+*.iml
+.vscode/
+
+# =========================
+# 📝 Logs / Temp
+# =========================
+*.log
+*.swp
+*.pyc
+.buildlog/
+.history
+.DS_Store
+
+# =========================
+# 📁 Misc
+# =========================
+*.class
+*.ipr
+*.iws
+.svn/
+.atom/
+migrate_working_dir/
+*.zip
+*.tar
+*.gz
+
+# =========================
+# 🔥 Flutter extras
+# =========================
+**/doc/api/
+**/ios/Flutter/.last_build_id
+
+# Symbolication
+app.*.symbols
+
+# Obfuscation
+app.*.map.json
