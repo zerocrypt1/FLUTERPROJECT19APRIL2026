@@ -1,7 +1,5 @@
-// src/components/Desktop3/Desktop3.jsx
-
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom'; // ✅ FIXED
+import { useLocation, useNavigate } from 'react-router-dom';
 import EmployeeForm from '../Form/EmployeeForm';
 import Sidebar from '../Form/Sidebar';
 import { useAuth } from '../AuthContext';
@@ -9,7 +7,7 @@ import { toast } from 'react-hot-toast';
 
 function Desktop3() {
   const location = useLocation();
-  const navigate = useNavigate(); // ✅ now properly imported
+  const navigate = useNavigate();
   const { user, logout } = useAuth();
 
   const [isSidebarActive, setIsSidebarActive] = useState(false);
@@ -20,11 +18,13 @@ function Desktop3() {
     const id = params.get('id');
 
     if (id) {
+      console.log('🔍 Edit Mode - Employee ID:', id);
+      console.log('👤 Current User ID:', user?._id);
       setEditId(id);
     } else {
       setEditId(null);
     }
-  }, [location.search]);
+  }, [location.search, user]);
 
   const toggleSidebar = () => {
     setIsSidebarActive(prev => !prev);
@@ -33,8 +33,6 @@ function Desktop3() {
   const handleLogout = () => {
     logout();
     toast.success('Logged out successfully!');
-    
-    // ✅ optional redirect after logout
     navigate('/login');
   };
 
@@ -49,8 +47,9 @@ function Desktop3() {
       
       <EmployeeForm 
         isSidebarActive={isSidebarActive}
-        isEditMode={Boolean(editId)} // ✅ cleaner
+        isEditMode={Boolean(editId)}
         editId={editId}
+        currentUserId={user?._id}
       />
     </div>
   );

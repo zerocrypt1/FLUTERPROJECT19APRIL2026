@@ -1,4 +1,3 @@
-// src/components/Form/EmployeeForm.jsx
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import PhoneInput from 'react-phone-input-2';
 import OtpInput from 'otp-input-react';
@@ -315,7 +314,7 @@ function LocationSearch({ onLocationSelect, value, onChange }) {
 
 // ─── Main EmployeeForm ────────────────────────────────────────────────────────
 
-function EmployeeForm({ isSidebarActive }) {
+function EmployeeForm({ isSidebarActive, isEditMode, editId }) {
   const [formData, setFormData] = useState(initialFormData);
   const [loading, setLoading] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
@@ -327,6 +326,107 @@ function EmployeeForm({ isSidebarActive }) {
   const [manualLat, setManualLat] = useState('');
   const [manualLng, setManualLng] = useState('');
   const [activeTab, setActiveTab] = useState('personal'); // 'personal' | 'location' | 'timing'
+  const [initialLoadDone, setInitialLoadDone] = useState(false);
+  const [phoneChanged, setPhoneChanged] = useState(false);
+
+  // ── Load form data for editing ──
+  useEffect(() => {
+    const loadEditData = async () => {
+      try {
+        // ✅ Only proceed if in edit mode and editId exists
+        if (!isEditMode || !editId) {
+          console.log('ℹ️ Not in edit mode or no editId provided');
+          setInitialLoadDone(true);
+          return;
+        }
+
+        console.log('🔄 Loading employee data for ID:', editId);
+        setLoading(true);
+
+        // ✅ Fetch employee data from backend
+        const response = await formAPI.getFormById(editId);
+        
+        console.log('📦 Full API Response:', response);
+        
+        // ✅ Handle both direct data and nested data structure
+        const data = response?.data || response || {};
+        
+        console.log('📋 Extracted Data:', data);
+        console.log('📋 Name:', data.name);
+        console.log('📋 Age:', data.age);
+        console.log('📋 Gender:', data.gender);
+        console.log('📋 Occupation:', data.occupation);
+        console.log('📋 Phone:', data.phoneNumber);
+
+        // ✅ Build location object from response
+        let locationObject = null;
+        if (data.location || (data.latitude && data.longitude)) {
+          locationObject = {
+            placeId: data.location?.placeId || null,
+            formattedAddress: data.location?.formattedAddress || data.address || '',
+            name: data.location?.name || '',
+            city: data.location?.city || data.city || '',
+            state: data.location?.state || data.state || '',
+            country: data.location?.country || '',
+            pinCode: data.location?.pinCode || data.pinCode || '',
+            coordinates: data.location?.coordinates || (data.latitude && data.longitude ? {
+              type: 'Point',
+              coordinates: [data.longitude, data.latitude],
+            } : null),
+          };
+        }
+
+        // ✅ Map all fields from backend response
+        const mappedData = {
+          name: data.name || '',
+          age: data.age ? String(data.age) : '',
+          gender: data.gender || '',
+          occupation: Array.isArray(data.occupation) ? data.occupation : (data.occupation ? [data.occupation] : []),
+          phoneNumber: data.phoneNumber ? (data.phoneNumber.startsWith('+') ? data.phoneNumber : `+91${data.phoneNumber}`) : '',
+          altPhoneNumber: data.altPhoneNumber || '',
+          identityProof: data.identityProof || '',
+          idProofNumber: data.idProofNumber || '',
+          blueTicket: data.blueTicket === true || data.blueTicket === 'true',
+          landmarks: data.landmarks || '',
+          timing: Array.isArray(data.timing) ? data.timing : (data.timing ? [data.timing] : []),
+          address: data.address || '',
+          city: data.city || '',
+          state: data.state || '',
+          pinCode: data.pinCode || '',
+          location: locationObject,
+        };
+
+        console.log('✅ Mapped Form Data:', mappedData);
+
+        // ✅ Update form state
+        setFormData(mappedData);
+
+        // ✅ Set location search from address
+        if (data.address) {
+          setLocationSearch(data.address);
+        } else if (data.location?.formattedAddress) {
+          setLocationSearch(data.location.formattedAddress);
+        }
+
+        // ✅ Mark phone as verified in edit mode
+        setOtpVerified(true);
+        setPhoneChanged(false);
+
+        toast.success('✅ Employee data loaded successfully');
+        console.log('✅ Data loading complete');
+
+      } catch (error) {
+        console.error('❌ Error loading employee data:', error);
+        console.error('❌ Error details:', error.message);
+        toast.error(error.message || 'Failed to load employee data');
+      } finally {
+        setLoading(false);
+        setInitialLoadDone(true);
+      }
+    };
+
+    loadEditData();
+  }, [isEditMode, editId]);
 
   // ── Handlers ──
 
@@ -444,6 +544,7 @@ function EmployeeForm({ isSidebarActive }) {
       if (result?.verified) {
         setOtpVerified(true);
         setEnteredOtp(''); // 🔥 clear input
+        setPhoneChanged(false);
         toast.success('Phone verified successfully!');
       } else {
         toast.error('Invalid OTP');
@@ -456,6 +557,7 @@ function EmployeeForm({ isSidebarActive }) {
       setLoading(false);
     }
   };
+
   // ── Submit ──
 
   const handleSubmit = async (e) => {
@@ -488,14 +590,24 @@ function EmployeeForm({ isSidebarActive }) {
   
       console.log("FINAL PAYLOAD:", payload); // 🔥 debug
   
-      const data = await formAPI.submitForm(payload);
-  
-      toast.success(data.message || 'Saved successfully!');
+      let response;
+      if (isEditMode && editId) {
+        // ✅ UPDATE existing form
+        console.log(`🔄 Updating employee with ID: ${editId}`);
+        response = await formAPI.updateForm(editId, payload);
+        toast.success(response.message || 'Employee updated successfully!');
+      } else {
+        // ✅ CREATE new form
+        console.log('➕ Creating new employee');
+        response = await formAPI.submitForm(payload);
+        toast.success(response.message || 'Saved successfully!');
+      }
   
       setFormData(initialFormData);
       setOtpVerified(false);
       setEnteredOtp('');
       setLocationSearch('');
+      setPhoneChanged(false);
   
     } catch (error) {
       console.error("SUBMIT ERROR:", error);
@@ -539,6 +651,14 @@ function EmployeeForm({ isSidebarActive }) {
     placeholder: (base) => ({ ...base, color: '#9ca3af', fontSize: 13 }),
   };
 
+  if (!initialLoadDone) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
+        <CgSpinner size={40} style={{ animation: 'spin 1s linear infinite', color: '#6366f1' }} />
+      </div>
+    );
+  }
+
   return (
     <>
       <style>{cssString}</style>
@@ -549,8 +669,8 @@ function EmployeeForm({ isSidebarActive }) {
         <div className="ef-header">
           <div className="ef-header-icon"><FiUser size={22} color="#6366f1" /></div>
           <div>
-            <h1 className="ef-title">Employee Registration</h1>
-            <p className="ef-subtitle">Fill in details to register a new employee</p>
+            <h1 className="ef-title">{isEditMode ? 'Edit Employee' : 'Employee Registration'}</h1>
+            <p className="ef-subtitle">{isEditMode ? 'Update employee details' : 'Fill in details to register a new employee'}</p>
           </div>
         </div>
 
@@ -612,6 +732,7 @@ function EmployeeForm({ isSidebarActive }) {
                   isMulti
                   options={occupationOptions}
                   onChange={opts => setFormData(p => ({ ...p, occupation: opts ? opts.map(o => o.value) : [] }))}
+                  value={occupationOptions.filter(o => formData.occupation.includes(o.value)) || []}
                   placeholder="Select occupations"
                   styles={selectStyles}
                 />
@@ -658,7 +779,7 @@ function EmployeeForm({ isSidebarActive }) {
 
             {/* ── Phone + OTP Section ── */}
             <div className="ef-otp-section">
-            <div id="recaptcha-container"></div>
+              <div id="recaptcha-container"></div>
               <div className="ef-otp-header">
                 <FiShield size={16} color="#6366f1" />
                 <span>Phone Verification</span>
@@ -676,14 +797,23 @@ function EmployeeForm({ isSidebarActive }) {
                     
                       setFormData(p => ({ ...p, phoneNumber: formatted }));
                     
-                      // 🔥 IMPORTANT RESET
-                      setOtpVerified(false);
+                      // ✅ Reset verification if phone changed
+                      if (isEditMode) {
+                        setPhoneChanged(true);
+                        setOtpVerified(false);
+                      } else {
+                        setOtpVerified(false);
+                      }
                       setEnteredOtp('');
                     }}
                     inputProps={{ name: 'phoneNumber', required: true }}
                     inputStyle={{ width: '100%', height: 44, borderRadius: 10, border: '1.5px solid #e5e7eb', fontSize: 14 }}
                     buttonStyle={{ borderRadius: '10px 0 0 10px', border: '1.5px solid #e5e7eb' }}
                   />
+                  {/* ✅ Show warning if phone was changed in edit mode */}
+                  {isEditMode && phoneChanged && (
+                    <div className="ef-hint" style={{ color: '#f97316' }}>⚠️ Phone number changed. Please verify the new number.</div>
+                  )}
                   <button
                     type="button"
                     className="ef-btn ef-btn-secondary"
@@ -875,7 +1005,7 @@ function EmployeeForm({ isSidebarActive }) {
                 className="ef-btn ef-btn-primary ef-btn-submit"
                 disabled={loading || !otpVerified}
               >
-                {loading ? <CgSpinner className="spin" /> : <><FiCheck /> Save Employee</>}
+                {loading ? <CgSpinner className="spin" /> : <><FiCheck /> {isEditMode ? 'Update Employee' : 'Save Employee'}</>}
               </button>
             </div>
           </div>

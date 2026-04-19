@@ -48,3 +48,13 @@ Thumbs.db
 *.zip
 *.tar
 *.gz
+
+# 🔐 Firebase & API configs (sensitive)
+src/firebase.js
+Desktop1/firebase.config.js
+Desktop1/GoogleMapAPI.js
+
+# Optional (agar aur bhi sensitive ho)
+.env
+.env.local
+.env.*.local
