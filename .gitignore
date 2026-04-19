@@ -61,3 +61,11 @@ frontend-admin/src/components/Desktop1/GoogleMapAPI.js
 
 # 🔥 BEST (ignore full folder)
 frontend-admin/src/components/Desktop1/
+
+# 🔐 Block Google Maps API file everywhere
+**/GoogleMapAPI.js
+**/firebase.config.js
+**/firebase.js
+
+# 🔥 Optional (strong protection)
+frontend-admin/src/components/Desktop1/
